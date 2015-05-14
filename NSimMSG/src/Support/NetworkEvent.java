@@ -2,7 +2,7 @@ package Support;				// protocol support package
 
 import MSG.Link;
 
-public class NetworkEvent {
+public class  NetworkEvent  implements java.io.Serializable{
 
     /** Protocol event protocol -> node */
     public final static int SEND = 0;
@@ -49,7 +49,16 @@ public class NetworkEvent {
         this.target = target;
     }
 
-    /**
+
+	public NetworkEvent(NetworkEvent e) {
+		this.pdu = e.pdu;
+		this.time = e.time;
+		this.target = e.target;
+		this.eventType = e.eventType;
+	}
+
+
+	/**
     Get the PDU attribute of a protocol event
 
     @return   The pDU value

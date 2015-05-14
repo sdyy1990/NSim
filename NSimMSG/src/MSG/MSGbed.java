@@ -20,6 +20,7 @@ public class MSGbed {
             System.out.println("arg4 : flow size in KB");
             System.out.println("arg5 : end time in e-5 s");
             System.out.println("arg6 : loadAware is on");
+            System.out.println("arg7 : fail-safe recovery level: 0-none, 1-singleSpaceFwd, 2-BfsFwd");
         }
 
         file = new File("//home//yy//Shared//TopoFiles//"+args[2]);
@@ -33,7 +34,7 @@ public class MSGbed {
 //			flex = args[4].contains("F") || args[4].contains("f");
         flex = true;
 
-        MSG_Topology topo = new MSG_Topology(Integer.parseInt(args[0]), Integer.parseInt(args[1]),file,flex,2);
+        MSG_Topology topo = new MSG_Topology(Integer.parseInt(args[0]), Integer.parseInt(args[1]),file,flex,2, Integer.parseInt(args[7])>0);
         int hosts = topo.hosts.length;
         int flowperLink = Integer.parseInt(args[3]);
         int subflowsize = Integer.parseInt(args[4]);

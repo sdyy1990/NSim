@@ -5,12 +5,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Vector;
 
 import Support.Coor1D;
 import Support.Coordinate;
-import Support.Simusys;
 
 public class MSG_Topology {
     private int nodecount;
@@ -21,18 +19,17 @@ public class MSG_Topology {
     public int CoorType;
     public int dimentions;
     public Vector<Link> links;
-    public MSG_Topology (int port ,int host, File file,boolean flex_space, int route_hop) {
+    public MSG_Topology (int port ,int host, File file,boolean flex_space, int route_hop, boolean use_recovery_switch) {
         try {
 
             links = new Vector<Link>();
-            BufferedReader bf = new BufferedReader(new FileReader(file));
             String line =null;
             //this.hostcount = host;
             this.hosts = new Host[host];
             //this.switchlinks = new Link[host][];
             int st[] = null,ed[] = null;
             int edgecnt = 0;
-            while ((line =  bf.readLine())!=null) {
+            while ((line =  new BufferedReader(new FileReader(file)).readLine())!=null) {
                 //	System.out.println(line);
                 String[] arrl = line.split(" ");
                 if (arrl[0].equals("N")) {

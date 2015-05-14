@@ -5,10 +5,12 @@ import java.util.Vector;
 import MSG.Host;
 import MSG.Link;
 import MSG.Node;
+import MSG.PairLinkEvent;
 import Support.EventManager;
 import Support.NetworkEvent;
 import Support.Simusys;
 
+import Support.PDU;
 public abstract class SimpleSwitch extends Node {
     protected int port;
     public int id;
@@ -77,21 +79,22 @@ public abstract class SimpleSwitch extends Node {
         return false;
     }
 
-    boolean recv(NetworkEvent event) {
-        event.setType(NetworkEvent.SEND);
-        event.setTarget(this);
+    protected boolean recv(NetworkEvent e) {
+        e.setType(NetworkEvent.SEND);
+        e.setTarget(this);
 
-        Link link = getLink(event.getPDU());
+        PairLinkEvent[] a = getLink(e);
         
         // System.out.println("swich"+this.id+" recvpkgto"+event.getPDU().getdestid()+" link"+link.getName());
-        if (buffer_size >= event.getPDU().size) {
-            this.getSendQueueByLink(link).add(event);
-            event.setRelatedLink(link);
-            buffer_size -= event.getPDU().size;
+        for (PairLinkEvent v: a) {
+        	if (buffer_size >= v.event.getPDU().size) {
+        		this.getSendQueueByLink(v.link).add(v.event);
+        		v.event.setRelatedLink(v.link);
+        		buffer_size -= v.event.getPDU().size;
+        	}
+        	else
+        		;//System.err.println(this.getName()+"has to drop packets due to full queue");
         }
-        else
-            ;//System.err.println(this.getName()+"has to drop packets due to full queue");
-
         return false;
     }
 
@@ -164,4 +167,5 @@ public abstract class SimpleSwitch extends Node {
     protected Vector<NetworkEvent> getSendQueueByLink(Link link) {
         return send_events.get(ports.indexOf(link));
     }
+    abstract protected PairLinkEvent[] getLink(NetworkEvent e);
 }

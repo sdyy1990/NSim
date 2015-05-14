@@ -27,7 +27,7 @@ public class MSGShuffleBed {
         }
         boolean flex = true;
         flex = true;
-        MSG_Topology topo = new MSG_Topology(Integer.parseInt(args[0]), Integer.parseInt(args[1]),file,flex,2);
+        MSG_Topology topo = new MSG_Topology(Integer.parseInt(args[0]), Integer.parseInt(args[1]),file,flex,2,false);
         Host[] hosts = topo.hosts;
         ShuffleBed shufflebed = new ShuffleBed(hosts,Integer.parseInt(args[4]),Integer.parseInt(args[3]));
         Simusys.setLink(topo.links);

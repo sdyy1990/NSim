@@ -1,7 +1,9 @@
 package Example;
 
 import MSG.Link;
+import MSG.PairLinkEvent;
 import SimpleBed.SimpleSwitch;
+import Support.NetworkEvent;
 import Support.PDU;
 
 public class ExampleSwitch extends SimpleSwitch {
@@ -16,12 +18,15 @@ public class ExampleSwitch extends SimpleSwitch {
 	}
 	//Example Switch: have 1 neighbor switch, 1 neighbor host
 	@Override
-	protected Link getLink(PDU pdu) {
-		int dst = pdu.getdestid();
+	protected PairLinkEvent[] getLink(NetworkEvent e) {
+		PairLinkEvent[] ans = new PairLinkEvent[1];
+		ans[0].event = new NetworkEvent(e);
+		int dst = e.getPDU().getdestid();
 		if (dst == hosts.get(0).id)
-			return ports.get(0);
+			ans[0].link = ports.get(0);
 		else 
-			return ports.get(1);
+			ans[0].link = ports.get(1);
+		return ans;
 	}
 
 }

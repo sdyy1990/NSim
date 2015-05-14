@@ -49,6 +49,7 @@ public class Switch extends SimpleSwitch {
     	}
 		
     }
+    
     private Link getLinkHere(PDU pdu){
         Integer srcDest = Integer.valueOf(pdu.getsrcid()*1024+pdu.getdestid());
 
@@ -288,4 +289,14 @@ public class Switch extends SimpleSwitch {
     public Vector<Node> getNeighbour() {
         return neighbours;
     }
+
+
+
+	@Override
+	protected PairLinkEvent[] getLink(NetworkEvent e) {
+		PairLinkEvent ans [] = new PairLinkEvent [1];
+		ans[0].event = e;
+		ans[0].link = getLink(e.getPDU());
+		return ans; 
+	}
 }
