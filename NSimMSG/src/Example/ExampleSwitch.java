@@ -1,10 +1,10 @@
 package Example;
 
 import MSG.Link;
-import MSG.PairLinkEvent;
 import SimpleBed.SimpleSwitch;
 import Support.NetworkEvent;
 import Support.PDU;
+import Support.PairLinkEvent;
 
 public class ExampleSwitch extends SimpleSwitch {
 

@@ -1,12 +1,11 @@
-package MSG;
+package Support;
 
-import Support.NetworkEvent;
-import Support.PDU;
+import MSG.Link;
 
 public class PairLinkEvent {
 	public NetworkEvent event;
 	public Link link;
-	PairLinkEvent(NetworkEvent _event, Link _link) {
+	public PairLinkEvent(NetworkEvent _event, Link _link) {
 		link = _link; event = _event;
 	}
 }

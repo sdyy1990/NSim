@@ -10,6 +10,7 @@ import Support.Coordinate;
 import Support.EventManager;
 import Support.NetworkEvent;
 import Support.PDU;
+import Support.PairLinkEvent;
 import Support.Simusys;
 import TCP.TCPCoorMessage;
 public class Switch extends SimpleSwitch {

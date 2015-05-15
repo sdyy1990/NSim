@@ -3,8 +3,8 @@ package ProbeHisotry;
 import java.util.Vector;
 
 import MSG.Link;
-import MSG.PairLinkLink;
 import Support.Coordinate;
+import Support.PairLinkLink;
 
 public class ProbeHistoryTableEntry {
 	public Coordinate coor;

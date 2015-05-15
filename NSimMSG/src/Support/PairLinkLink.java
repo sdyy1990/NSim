@@ -1,6 +1,6 @@
-package MSG;
+package Support;
 
-import Support.NetworkEvent;
+import MSG.Link;
 
 public class PairLinkLink {
 	public Link src;

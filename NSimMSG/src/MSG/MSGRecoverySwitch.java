@@ -4,10 +4,12 @@ import java.util.Vector;
 
 import ProbeHisotry.ProbeHistoryTable;
 import ProbeHisotry.ProbeHistoryTableEntry;
+import ProbeHisotry.ShortcutTable;
 import SimpleBed.SimpleHost;
 import Support.Coordinate;
 import Support.NetworkEvent;
 import Support.PDU;
+import Support.PairLinkEvent;
 import TCP.TCPCoorMessage;
 import TCP.TCPRecoveryCoorMessage;
 
@@ -17,6 +19,8 @@ public class MSGRecoverySwitch extends Switch {
 			int routing_hop, boolean flex_space) {
 		super(coor, port, id, routing_hop, flex_space);
 		portActive = new Vector<Boolean>(port);
+		shortcut = new ShortcutTable();
+		probeHistory = new ProbeHistoryTable();
 	}
 	@Override
     public void addNeighbour(Link l, Node neigh) {
@@ -48,13 +52,29 @@ public class MSGRecoverySwitch extends Switch {
 	}
 	private PairLinkEvent[] getLinkBFSProbe(NetworkEvent e) {
 		PDU pdu = e.getPDU();
-		//TODO
-		return null;
-	}
-	private Link getsourceLinkByPDU(PDU pdu) {
-		Coordinate coor2 = ((TCPCoorMessage) pdu).getdestCoor();
-		
-        return null;
+        Coordinate coor2 = ((TCPCoorMessage) pdu).getdestCoor();
+        Link srclink = e.lastTransmittedLink();
+        if (coor2.dist_to_switch(this.coor)< coor2.eps()) {
+        	//if this is the destination, send reply. and pass on
+        	PairLinkEvent ans[] = new PairLinkEvent[2];
+    		ans[0] = new PairLinkEvent(e, getHostLink(coor2));
+    		shortcut.addShortcut(coor2, ans[0].link);
+            NetworkEvent enew = (NetworkEvent) e.duplicate();
+            ((TCPRecoveryCoorMessage) enew.getPDU()).type = TCPRecoveryCoorMessage.BFS_PROBE_TYPE;
+            ans[1] = new PairLinkEvent(enew,srclink);
+    		return ans;
+        }
+        Link fwdlink = shortcut.findLinkByCoor(coor2);
+        if (fwdlink!= null) {
+            //if already has established a shortcut, send reply, and pass on.
+        	PairLinkEvent ans[] = new PairLinkEvent[2];
+    		ans[0] = new PairLinkEvent(e, fwdlink);
+            NetworkEvent enew = (NetworkEvent) e.duplicate();
+            ((TCPRecoveryCoorMessage) enew.getPDU()).type = TCPRecoveryCoorMessage.BFS_PROBE_TYPE;
+            ans[1] = new PairLinkEvent(enew,srclink);
+    		return ans;
+        }
+        return startBFS(e);
 	}
 
 	private PairLinkEvent[] getLinkRegular(NetworkEvent e) {
@@ -69,8 +89,16 @@ public class MSGRecoverySwitch extends Switch {
         else if (flowSrcDestLst.get(srcDest).indexOf(Integer.valueOf(pdu.getflowid()))<0)
             flowSrcDestLst.get(srcDest).add(Integer.valueOf(pdu.getflowid()));
         subid = flowSrcDestLst.get(srcDest).indexOf(Integer.valueOf(pdu.getflowid()));
-
+        
+        //Look for shortcut;
         Coordinate coor2 = ((TCPCoorMessage) pdu).getdestCoor();
+        Link link = shortcut.findLinkByCoor(coor2);
+        if (link!=null) {
+        	PairLinkEvent ans[] = new PairLinkEvent[1];
+    		ans[0] = new PairLinkEvent(e, link);
+    		return ans;
+        }
+        
         double dist = calculation_dist(this.coor,coor2,pdu);
         int who = -1;
         for (int i = 0 ; i < this.neighbours.size(); i++) {
@@ -128,7 +156,7 @@ public class MSGRecoverySwitch extends Switch {
 		 return ans;
 	}
 	private ProbeHistoryTable probeHistory;
-	
+	private ShortcutTable shortcut; 
 	
 	
 }

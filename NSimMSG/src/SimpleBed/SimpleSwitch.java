@@ -5,9 +5,9 @@ import java.util.Vector;
 import MSG.Host;
 import MSG.Link;
 import MSG.Node;
-import MSG.PairLinkEvent;
 import Support.EventManager;
 import Support.NetworkEvent;
+import Support.PairLinkEvent;
 import Support.Simusys;
 
 import Support.PDU;

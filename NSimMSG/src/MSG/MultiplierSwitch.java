@@ -3,6 +3,7 @@ package MSG;
 import SimpleBed.SimpleSwitch;
 import Support.NetworkEvent;
 import Support.PDU;
+import Support.PairLinkEvent;
 
 public abstract class MultiplierSwitch extends SimpleSwitch {
 
