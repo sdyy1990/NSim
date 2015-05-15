@@ -15,7 +15,7 @@ import TCP.TCPCoorMessage;
 public class Switch extends SimpleSwitch {
 
     public Coordinate coor;
-    private int routing_neighbour_hop;
+    protected int routing_neighbour_hop;
     private boolean flex_space_routing;
     protected Map< Integer, Vector<Integer> > flowSrcDestLst;
     private Map< Integer, Link > routeHistory;
@@ -259,7 +259,7 @@ public class Switch extends SimpleSwitch {
 
     }
 
-    private Link getHostLink(Coordinate coor2) {
+    protected Link getHostLink(Coordinate coor2) {
         int who = -1;
         double dist = Coordinate.max_coordinate;
         for (int i = 0; i< this.hosts.size(); i++) {

@@ -115,5 +115,9 @@ public class SmallWorldCoor implements Coordinate {
             return x + " " + y ;
         return Integer.toString(x) ;
     }
+	@Override
+	public double eps() {
+		return 1e-3;
+	}
 
 }

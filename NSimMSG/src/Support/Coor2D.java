@@ -45,4 +45,10 @@ public class Coor2D implements Coordinate {
         return 0;
     }
 
+	@Override
+	public double eps() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

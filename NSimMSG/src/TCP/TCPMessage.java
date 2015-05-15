@@ -28,7 +28,20 @@ public class TCPMessage extends PDU {
         dstid = dstc;
         this.flowid = flowid;
     }
-    public void setOp(int op) {
+    public TCPMessage(TCPMessage t) {
+    	super(t);
+    	this.sport = t.sport;
+    	this.dport = t.dport;
+    	this.ttl = t.ttl;
+    	this.seq = t.seq;
+    	this.ack = t.ack;
+    	this.op = t.op;
+    	this.ts = t.ts;
+    	this.tcpdst = t.tcpdst;
+    	this.srcid = t.srcid;
+    	this.dstid = t.dstid;
+	}
+	public void setOp(int op) {
         this.op = op;
     }
 
@@ -87,4 +100,9 @@ public class TCPMessage extends PDU {
     public int getsrcid() {
         return srcid;
     }
+	@Override
+	public PDU duplicate() {
+		TCPMessage t = new TCPMessage(this);
+		return t;
+	}
 }

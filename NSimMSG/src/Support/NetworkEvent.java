@@ -51,7 +51,7 @@ public class  NetworkEvent  implements java.io.Serializable{
 
 
 	public NetworkEvent(NetworkEvent e) {
-		this.pdu = e.pdu;
+		this.pdu = e.pdu.duplicate();
 		this.time = e.time;
 		this.target = e.target;
 		this.eventType = e.eventType;
@@ -152,6 +152,23 @@ public class  NetworkEvent  implements java.io.Serializable{
     public void setTime(long time) {
         this.time = time;
     }
+
+
+	public NetworkEvent deepclone() throws CloneNotSupportedException {
+		NetworkEvent e = (NetworkEvent) this.clone();
+		e.setPDU((PDU) this.pdu.duplicate());
+		return null;
+	}
+
+
+	public NetworkEvent duplicate() {
+		return new NetworkEvent(this);
+	}
+
+
+	public Link lastTransmittedLink() {
+		return pdu.last_transmited;
+	}
 
 }
 

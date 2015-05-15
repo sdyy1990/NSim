@@ -8,7 +8,6 @@ public abstract class MultiplierSwitch extends SimpleSwitch {
 
 	public MultiplierSwitch(int port, int id) {
 		super(port, id);
-		// TODO Auto-generated constructor stub
 	}
 	@Override
 	protected
@@ -20,7 +19,7 @@ public abstract class MultiplierSwitch extends SimpleSwitch {
         PairLinkEvent nxthps[] = getLinkEvents(event.getPDU());
         
         // System.out.println("swich"+this.id+" recvpkgto"+event.getPDU().getdestid()+" link"+link.getName());
-        for (PairLinkEvent a: nxthps) {
+        for (PairLinkEvent a: nxthps) if (a!=null){
         	if (buffer_size >= a.event.getPDU().size) {
         		this.getSendQueueByLink(a.link).add(a.event);
         		event.setRelatedLink(a.link);

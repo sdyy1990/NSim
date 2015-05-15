@@ -97,6 +97,7 @@ public class Link {
         }
 
         event.getTarget().addEvent(event);
+        event.getPDU().last_transmited = this;
         return true;
     }
 

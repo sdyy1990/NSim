@@ -2,10 +2,12 @@ package MSG;
 
 import java.io.File;
 import java.net.URL;
+
 import SimpleBed.SimpleBed;
 import Support.Simusys;
 import TCP.TCPBony;
 import TCP.TCPCoorBony;
+import TCP.TCPRecoveryCoorBony;
 
 public class MSGbed {
     public static  void main(String args[]) {
@@ -33,7 +35,7 @@ public class MSGbed {
 //		if (args.length>4)
 //			flex = args[4].contains("F") || args[4].contains("f");
         flex = true;
-
+        int recoverylevel = Integer.parseInt(args[7]);
         MSG_Topology topo = new MSG_Topology(Integer.parseInt(args[0]), Integer.parseInt(args[1]),file,flex,2, Integer.parseInt(args[7])>0);
         int hosts = topo.hosts.length;
         int flowperLink = Integer.parseInt(args[3]);
@@ -46,9 +48,15 @@ public class MSGbed {
         for (int i = 0 ; i < flows; i++) {
             //tcpc[i] = new TCPBony(topo.hosts[i%hosts],(short)(i+1),10000);
             //tcps[i] = new TCPBony(topo.hosts[i%hosts],(short) (i+1));
-
-            tcpc[i] = new TCPCoorBony(topo.hosts[permu[i % (hosts)]],(short)(i+1),subflowsize);
-            tcps[i] = new TCPCoorBony(topo.hosts[permu[(i+1) % (hosts)]],(short) (i+1));
+        	if (recoverylevel > 0 ){
+                tcpc[i] = new TCPRecoveryCoorBony(topo.hosts[permu[i % (hosts)]],(short)(i+1),subflowsize);
+                tcps[i] = new TCPRecoveryCoorBony(topo.hosts[permu[(i+1) % (hosts)]],(short) (i+1));
+        	}
+        	else {
+        		tcpc[i] = new TCPCoorBony(topo.hosts[permu[i % (hosts)]],(short)(i+1),subflowsize);
+                tcps[i] = new TCPCoorBony(topo.hosts[permu[(i+1) % (hosts)]],(short) (i+1));
+            		
+        	}
         }
 
         for (int i = 0 ; i < flows; i++) {

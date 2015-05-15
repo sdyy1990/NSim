@@ -14,4 +14,5 @@ public interface Coordinate {
     public int getdim();
     public void generate_from_content(long x);
     public String toString();
+    public double eps();
 }

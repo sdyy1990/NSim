@@ -75,5 +75,9 @@ public class Coor1D implements Coordinate {
     public int getdim() {
         return switchcoor.length;
     }
+	@Override
+	public double eps() {
+		return 1e-9;
+	}
 
 }

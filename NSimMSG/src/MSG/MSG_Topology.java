@@ -55,7 +55,10 @@ public class MSG_Topology {
                     int[] coor = new int[this.dimentions];
                     for (int i = 0 ; i < this.dimentions; i++)
                         coor[i] = Integer.parseInt(arrl[2+i]);
-                    this.nodes[id] = new Switch(new Support.Coor1D(coor),port,id,route_hop,flex_space);
+                    if (use_recovery_switch) 
+                        this.nodes[id] =new MSGRecoverySwitch(new Support.Coor1D(coor),port,id,route_hop,flex_space);
+                    else  
+                    	this.nodes[id] = new Switch(new Support.Coor1D(coor),port,id,route_hop,flex_space);
                 }
                 if (arrl[0].equals("H")) {
                     int id = Integer.parseInt(arrl[1])-1;

@@ -2,7 +2,9 @@
 
 package Support;				// protocol support package
 
-public abstract class PDU {
+import MSG.Link;
+
+public abstract class PDU implements Cloneable{
 
     public static final int NIL = 0;
     public static final int IP = 1;
@@ -34,11 +36,19 @@ public abstract class PDU {
     public int routingSpace = -1;
     public boolean first_hop = true;
     public boolean second_hop = true;
+    public Link last_transmited = null;
     public PDU(int type, int size, int subtype, PDU sdu) {
         this.type = type;
         this.size = size;
         this.subtype = subtype;
         this.sdu = sdu;
+    }
+    public PDU(PDU t) {
+    	 this.type = t.type;
+    	 this.size = t.size;
+    	 this.linkcount = t.linkcount;
+    	 this.subtype = t.subtype;
+    	 this.sdu = t.sdu.duplicate();
     }
 
     /**
@@ -76,5 +86,8 @@ public abstract class PDU {
     public void setpathtoken(int k) {
         pathtoken =k;
     }
+
+	public abstract PDU duplicate();
+
 }
 

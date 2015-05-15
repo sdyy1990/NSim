@@ -3,7 +3,12 @@ package TCP;
 public class FlowId {
     public long src, dest;
     public int sport, dport;
-
+    public FlowId(FlowId t) {
+    	src = t.src;
+    	dest = t.dest;
+    	sport = t.sport;
+    	dport = t.dport;
+    }
     public FlowId(long src, long dest, int sport, int dport) {
         this.src = src;
         this.dest = dest;

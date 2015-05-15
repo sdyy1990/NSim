@@ -12,6 +12,12 @@ public class FlowMessage extends PDU {
         super(PDU.LBDAR, 25 + sdu.size, PDU.TCP, sdu);
         this.timestamp = timestamp;
     }
+    public FlowMessage(FlowMessage u) {
+    	super(u);
+    	this.fid = u.fid;
+    	this.timestamp = u.timestamp;
+    	this.coor = u. coor;
+    }
 
     @Override
     public int getdestid() {
@@ -27,5 +33,10 @@ public class FlowMessage extends PDU {
     public int getsrcid() {
         return sdu.getsrcid();
     }
-
+    @Override
+    public PDU duplicate() {
+    	FlowMessage t = new FlowMessage(this);
+		return t;
+    }
+    
 }
